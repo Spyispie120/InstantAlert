@@ -1,3 +1,4 @@
+package com.instantalert;
 import static spark.Spark.get;
 import static spark.Spark.port;
 import static spark.debug.DebugScreen.enableDebugScreen;
@@ -10,5 +11,4 @@ public class InstantApplication {
 		enableDebugScreen();
 		get("/hello/", (req, res) -> "hello world" );
 	}
-
 }
