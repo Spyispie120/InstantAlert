@@ -10,7 +10,7 @@
           zoom: 16
         });
 
-      
+
         infoWindow = new google.maps.InfoWindow;
 
         // Try HTML5 geolocation.
@@ -33,7 +33,8 @@
           handleLocationError(false, infoWindow, map.getCenter());
         }
 
-        var iconBase = '/Users/haileewang/Desktop/alart/InstantAlert/web/image/';
+        var iconBase = 'D:/Programming/Repository/InstantAlert/web/image/';
+        //D:/Programming/Repository/InstantAlert/web/image/
         var icons = {
           level3: {
             icon: iconBase + 'level3.png'
@@ -71,7 +72,7 @@
         }
         var arrOfUsers = [obj1, obj2, obj3];
 
-        
+
 
         var features = [
           {
@@ -87,7 +88,7 @@
         ];
 
         for (var i = 0; i < arrOfUsers.length; i++) {
-            var obj = 
+            var obj =
               {
                 position: new google.maps.LatLng(parseFloat(arrOfUsers[i].lat),
                                                 parseFloat(arrOfUsers[i].long)),

@@ -5,12 +5,18 @@ var $ = (id)=> {return document.getElementById(id);};
 const apiLink = "http://10.18.198.148:4567";
 window.onload = function(){
     $("send").onclick = buttonPost;
+
+    var arrOfUsers = [];
+    createMarkerArr(arrOfUsers);
 };
 var arr_msg = [];
 var longlat;
 
+var features = [];
+
+var map, infoWindow;
 function buttonPost() {
-    console.log("hi");
+    console.log("butn click");
     var text = $("text").value;
     var radios = document.getElementsByName("level");
     var value;
@@ -32,7 +38,7 @@ function buttonPost() {
     };
 
     fetch(apiLink+"/message/", {
-      mode: 'no-cors',
+      //mode: 'no-cors',
       method: 'POST', // or 'PUT'
       body: JSON.stringify(postPara), // data can be `string` or {object}!
       headers:{
@@ -46,39 +52,65 @@ function buttonPost() {
     .then(function(response) {
         console.log("stufff posttted, let goo dudde");
         console.log(response);
-                /*var obj = {
-                    user_id : Math.floor(Math.random() * 1000),
-                    msg_id : response,
-                    long: longlat["long"],
-                    lat: longlat["lat"],
-                    color: value,
-                    msg : text
-                }
-                arr_msg.push(obj);*/
+        var obj = {
+            user_id : Math.floor(Math.random() * 1000),
+            msg_id : response,
+            long: longlat["lng"],
+            lat: longlat["lat"],
+            color: value,
+            msg : text
+        }
+        console.log(obj);
+        arr_msg.push(obj);
+        createMarker(obj);
     }).catch(function(err){
         console.log(err);
     });
+}
+function createMarkerArr(arrOfUsers){
+    for (var i = 0; i < arrOfUsers.length; i++) {
+        var obj =
+          {
+            position: new google.maps.LatLng(parseFloat(arrOfUsers[i].lat),
+                                            parseFloat(arrOfUsers[i].long)),
+            type: "level" + parseInt(arrOfUsers[i].color)
+          };
+          features.push(obj);
+    }
+    features.forEach(function(feature) {
+    console.log("new marker created");
+      var marker = new google.maps.Marker({
+        position: feature.position,
+        icon: icons[feature.type].icon,
+        map: map
+      });
+    });
 
-    // var ajaxPromise = new AjaxPostPromise(apiLink+"/message/", postPara);
-    // ajaxPromise
-    //     .then((response)=>{
-    //         console.log("stufff posttted, let goo dudde");
-    //         var obj = {
-    //             user_id : Math.floor(Math.random() * 1000),
-    //             msg_id : response,
-    //             long: longlat["long"],
-    //             lat: longlat["lat"],
-    //             color: value,
-    //             msg : text
-    //         }
-    //         arr_msg.push(obj);
-    //     })
-    //     .catch((error)=>{
-    //         console.log(error);
-    //     });
+}
+function createMarker(marker){
+    console.log("new marker created");
+    console.log(marker);
+    console.log(parseFloat(marker.lat));
+    console.log(parseFloat(marker.lon));
+
+    var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(parseFloat(marker.lat),
+                                        parseFloat(marker.lon)),
+        icon: 'level'+marker.color,
+        map: map
+    });
+}
+function createMarkerIncident(incident){
+    var obj =
+      {
+        position: new google.maps.LatLng(parseFloat(incident.lat),
+                                        parseFloat(incident.long)),
+        type: "level" + parseInt(incident.color)
+      };
+      features.push(obj);
+      createMarker(obj);
 }
 
-var map, infoWindow;
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: -34.397, lng: 150.644},
@@ -87,9 +119,36 @@ function initMap() {
     infoWindow = new google.maps.InfoWindow;
     getCurrentLocation();
     trackLocation();
-
+    getAllIncident();
     // Try HTML5 geolocation.
 
+}
+
+function getAllIncident(){
+    fetch(apiLink+"/allincidents/", {
+      //mode: 'no-cors',
+      method: 'GET', // or 'PUT'
+
+      headers:{
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(response) {
+        console.log("stufff posttted, let goo dudde");
+        console.log(response);
+        response.forEach(function(item){
+            console.log(item);
+            arr_msg.push(item);
+            createMarker(item);
+        });
+
+    }).catch(function(err){
+        console.log(err);
+    });
 }
 
 function getCurrentLocation(){
@@ -142,5 +201,21 @@ function error(err) {
 function trackLocation(){
     id = navigator.geolocation.watchPosition(success, error);
 }
+
+var iconBase = "http://10.18.198.148:4567/images/";
+var icons = {
+  level3: {
+    icon: iconBase + 'level3.png'
+  },
+  level2: {
+    icon: iconBase + 'level2.png'
+  },
+  level1: {
+    icon: iconBase + 'level1.png'
+  }
+};
+
+
+
 
 //})();
