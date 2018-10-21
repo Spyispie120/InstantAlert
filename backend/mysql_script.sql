@@ -12,7 +12,7 @@ create table user_table(user_id int auto_increment,
 					
 create table incident_table(incident_id int auto_increment,
 						user_id int,
-						longtitude float,
+						longitude float,
                         latitude float,
                         upVote int,
                         downVote int,
