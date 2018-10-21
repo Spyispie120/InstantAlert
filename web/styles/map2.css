@@ -1,11 +1,32 @@
-#map {
-    height: 60%;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+}
+
+#wrapper {
     width: 70%;
+    height: 80%;
+    border: 5px solid red;
     margin: 0 auto;
 }
-/* Optional: Makes the sample page fill the window. */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+
+#map {
+    width: 100%;
+    height: 80%;
+    margin: 0 auto;
+}
+
+#send_form {
+    text-align: center;
+    margin: 0 auto;
+}
+
+#message {
+    padding: 2em;
+}
+
+label.container {
+    color: white;
 }
