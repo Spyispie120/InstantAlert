@@ -6,8 +6,9 @@ const apiLink = "http://10.18.198.148:4567";
 window.onload = function(){
     $("send").onclick = buttonPost;
 };
-var arr_msg;
+var arr_msg = [];
 var longlat;
+
 function buttonPost() {
     console.log("hi");
     var text = $("text").value;
@@ -30,20 +31,22 @@ function buttonPost() {
         msg : text
     };
 
-    var url = 'https://example.com/profile';
-    var data = {username: 'example'};
-
     fetch(apiLink+"/message/", {
+      mode: 'no-cors',
       method: 'POST', // or 'PUT'
       body: JSON.stringify(postPara), // data can be `string` or {object}!
       headers:{
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       }
+    })
+    .then(function(response) {
+        return response.json();
     })
     .then(function(response) {
         console.log("stufff posttted, let goo dudde");
         console.log(response);
-                var obj = {
+                /*var obj = {
                     user_id : Math.floor(Math.random() * 1000),
                     msg_id : response,
                     long: longlat["long"],
@@ -51,8 +54,10 @@ function buttonPost() {
                     color: value,
                     msg : text
                 }
-                arr_msg.push(obj);
-    })
+                arr_msg.push(obj);*/
+    }).catch(function(err){
+        console.log(err);
+    });
 
     // var ajaxPromise = new AjaxPostPromise(apiLink+"/message/", postPara);
     // ajaxPromise
