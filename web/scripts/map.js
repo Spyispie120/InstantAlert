@@ -6,7 +6,7 @@ const apiLink = "http://10.18.198.148:4567";
 window.onload = function(){
     $("send").onclick = buttonPost;
 };
-var arr_msg;
+var arr_msg = [];
 var longlat;
 function buttonPost() {
     console.log("hi");
@@ -34,6 +34,7 @@ function buttonPost() {
     var data = {username: 'example'};
 
     fetch(apiLink+"/message/", {
+        mode: 'no-cors',
       method: 'POST', // or 'PUT'
       body: JSON.stringify(postPara), // data can be `string` or {object}!
       headers:{
