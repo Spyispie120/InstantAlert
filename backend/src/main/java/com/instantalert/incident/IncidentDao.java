@@ -1,4 +1,6 @@
-package com.instantalert.user;
+package com.instantalert.incident;
+
+import static com.instantalert.util.Release.release;
 
 import java.lang.invoke.MethodHandles;
 import java.sql.Connection;
@@ -8,11 +10,10 @@ import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import static com.instantalert.util.Release.release;
+
 import com.instantalert.util.ConnectionManager;
 
-class UserDao {
-
+class IncidentDao {
 	private Connection conn = null;
 	final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -20,7 +21,7 @@ class UserDao {
 	 * The constructor makes a connection to database
 	 * @throws SQLException
 	 */
-	protected UserDao() throws SQLException{
+	protected IncidentDao() throws SQLException{
 		if(conn == null){
 			conn = ConnectionManager.getInstance().getConnection();
 			if (conn == null){
@@ -29,13 +30,13 @@ class UserDao {
 		}
 	}
 
-	protected boolean doesExist(String username){
+	protected boolean doesExist(int incidentId){
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			String sql = "SELECT user_name FROM user_table WHERE user_name=?";
+			String sql = "SELECT incident_id FROM incident_table WHERE incident_name=?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString( 1, username);
+			pstmt.setInt( 0, incidentId);
 			rs = pstmt.executeQuery();
 			return rs.next();
 		}catch (SQLException ex) {
@@ -46,26 +47,31 @@ class UserDao {
 		return false;
 	}
 
-	/**
-	 * add group id and leader id to corresponding table in mysql
-	 * @param groupId
-	 */
-	protected void addUser(String username, String firstName, String lastName, String salt, String hashedPassword){
+	
+	protected int addIncident(int userId, int latitude, int longitude, int color){
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try {
-			String sql = "INSERT INTO user_table VALUES (null,?,?,?,?,?)";
+			String sql = "INSERT INTO incident_table VALUES (null,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, username);
-			pstmt.setString(2, firstName);
-			pstmt.setString(3, lastName);
-			pstmt.setString(4, salt);
-			pstmt.setString(5, hashedPassword);
+			pstmt.setInt(1, userId);
+			pstmt.setInt(2, latitude);
+			pstmt.setInt(3, longitude);
+			pstmt.setInt(4, color);
 			pstmt.executeUpdate();
-		}catch (SQLException ex) {
-			logger.error("addUser() failed. " + ex.getMessage());
-		}finally {
+			
+			sql = "SELECT LAST_INSERT_ID()";
 			release(pstmt);
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			return rs.next() ? rs.getInt(1) : -1;
+		}catch (SQLException ex) {
+			logger.error("addIncident() failed. " + ex.getMessage());
+		}finally {
+			release(pstmt,rs);
 		}
+		return -1;
 	}
 
 	/**
