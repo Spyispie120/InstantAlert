@@ -4,11 +4,13 @@ import static spark.Spark.port;
 import static spark.Spark.post;
 import static spark.debug.DebugScreen.enableDebugScreen;
 
+import static spark.Spark.staticFiles;
 import com.instantalert.home.HomeHandler;
 import com.instantalert.util.DatabaseConnection;
 import com.instantalert.util.Path;
 import static spark.Spark.options;
 import static spark.Spark.before;
+
 public class InstantApplication {
 
 	public static void main(String[] args) {
@@ -18,6 +20,9 @@ public class InstantApplication {
 		//configure Spark
 		port(4567);
 		enableDebugScreen();
+		
+		//static folder
+		staticFiles.location("/public");
 		
 		//https://gist.github.com/saeidzebardast/e375b7d17be3e0f4dddf
 		options("/*",

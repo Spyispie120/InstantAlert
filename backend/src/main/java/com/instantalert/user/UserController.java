@@ -1,6 +1,5 @@
 package com.instantalert.user;
 
-import org.mindrot.jbcrypt.*;
 import java.lang.invoke.MethodHandles;
 import java.sql.SQLException;
 
