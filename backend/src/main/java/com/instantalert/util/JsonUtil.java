@@ -1,4 +1,4 @@
-package com.phuongdtran.util;
+package com.instantalert.util;
 
 import com.fasterxml.jackson.databind.*;
 import java.io.*;

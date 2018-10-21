@@ -1,7 +1,7 @@
 create database instant_alert;
 
 use instant_alert;
-drop database instant_alert;
+
 create table user_table(user_id int auto_increment,
 						username char(50) not null,
                         first_name char(50) not null,
@@ -18,5 +18,5 @@ create table incident_table(incident_id int auto_increment,
                         downVote int,
                         color int,
                         message char(200),
-                        primary key (incident_id),
-                        foreign key incident_table(user_id) references user_table(user_id));
+                        primary key (incident_id));
+                       -- foreign key incident_table(user_id) references user_table(user_id));
