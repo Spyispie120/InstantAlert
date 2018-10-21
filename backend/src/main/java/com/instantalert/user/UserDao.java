@@ -29,13 +29,13 @@ class UserDao {
 		}
 	}
 
-	protected boolean doesExist(String userId){
+	protected boolean doesExist(String username){
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			String sql = "SELECT user_id FROM user_table WHERE user_id=?";
+			String sql = "SELECT user_name FROM user_table WHERE user_name=?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString( 1, userId);
+			pstmt.setString( 1, username);
 			rs = pstmt.executeQuery();
 			return rs.next();
 		}catch (SQLException ex) {
