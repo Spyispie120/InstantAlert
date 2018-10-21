@@ -11,5 +11,4 @@ public class InstantApplication {
 		enableDebugScreen();
 		get("/hello/", (req, res) -> "hello world" );
 	}
-
 }
