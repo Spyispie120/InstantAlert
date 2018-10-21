@@ -27,12 +27,14 @@ public class HomeHandler {
 		String msg = json.get("msg").getAsString();
 		int incidentId = IncidentController.addIncident(userId, lat, lon, color, msg);
 		Map<String, Integer> object = new HashMap<String,Integer>();
+		response.type("application/json");
 		object.put("incident_id", incidentId);
 		return JsonUtil.dataToJson(object);
 	};
 	
 	public static Route handleAllIncidentsGet = (Request request, Response response) -> {
 		List<Incident> incidents = IncidentController.getAllIncidents();
+		response.type("application/json");
 		return JsonUtil.dataToJson(incidents);
 	};
 }

@@ -43,8 +43,8 @@ public class InstantApplication {
 		before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
 		
 		get("/hello/", (req, res) -> "hello world" );
-		post(Path.Web.MESSAGE, 		"application/json", 	 HomeHandler.handleMessagePost);
-		get(Path.Web.ALLINCIDENTS, 	"application/json",		HomeHandler.handleAllIncidentsGet);
+		post(Path.Web.MESSAGE, "application/json", 	 HomeHandler.handleMessagePost);
+		get(Path.Web.ALLINCIDENTS, HomeHandler.handleAllIncidentsGet);
 		get("*", (req, res) -> "Page Not Found");
 	}
 }
