@@ -35,29 +35,67 @@
 
         var iconBase = '/Users/haileewang/Desktop/alart/InstantAlert/web/image/';
         var icons = {
-          emergence: {
-            icon: iconBase + 'emergence.png'
+          level3: {
+            icon: iconBase + 'level3.png'
           },
-          incidence: {
-            icon: iconBase + 'incidence.png'
+          level2: {
+            icon: iconBase + 'level2.png'
           },
-          case: {
-            icon: iconBase + 'case.png'
+          level1: {
+            icon: iconBase + 'level1.png'
           }
         };
+        var obj1 = {
+          user_id: 10,
+          msg_id : 98,
+          long:"-122.303290",
+          lat:"47.655548",
+          color: 1,
+          msg: "boiiiii fire runnn"
+        }
+        var obj2 = {
+          user_id: 10,
+          msg_id: 322,
+          long:"-122.30312",
+          lat:"47.655548",
+          color: 1,
+          msg: "boiiiii fire runnn"
+        }
+        var obj3 = {
+          user_id: 10,
+          msg_id: 23,
+          long:"-122.30200",
+          lat:"47.655548",
+          color: 1,
+          msg: "boiiiii fire runnn"
+        }
+        var arrOfUsers = [obj1, obj2, obj3];
+
+        
 
         var features = [
           {
             position: new google.maps.LatLng(47.655548, -122.303200),
-            type: 'emergence'
+            type: 'level3'
           }, {
             position: new google.maps.LatLng(47.655348, -122.303720),
-            type: 'incidence'
+            type: 'level2'
           }, {
             position: new google.maps.LatLng(47.655078, -122.304950),
-            type: 'case'
+            type: 'level1'
           }
         ];
+
+        for (var i = 0; i < arrOfUsers.length; i++) {
+            var obj = 
+              {
+                position: new google.maps.LatLng(parseFloat(arrOfUsers[i].lat),
+                                                parseFloat(arrOfUsers[i].long)),
+                type: "level" + parseInt(arrOfUsers[i].color)
+              };
+              features.push(obj);
+            //Do something
+        }
 
         // Create markers.
         features.forEach(function(feature) {
