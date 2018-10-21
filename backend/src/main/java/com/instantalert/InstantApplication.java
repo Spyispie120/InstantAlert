@@ -18,6 +18,8 @@ public class InstantApplication {
 		//configure Spark
 		port(4567);
 		enableDebugScreen();
+		
+		//https://gist.github.com/saeidzebardast/e375b7d17be3e0f4dddf
 		options("/*",
 		        (request, response) -> {
 
@@ -41,8 +43,8 @@ public class InstantApplication {
 		before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
 		
 		get("/hello/", (req, res) -> "hello world" );
-		post(Path.Web.MESSAGE,"application/json",  HomeHandler.handleMessagePost);
-		get(Path.Web.MESSAGE,(req, res) ->"hi message");
+		post(Path.Web.MESSAGE, 		"application/json", 	 HomeHandler.handleMessagePost);
+		get(Path.Web.ALLINCIDENTS, 	"application/json",		HomeHandler.handleAllIncidentsGet);
 		get("*", (req, res) -> "Page Not Found");
 	}
 }

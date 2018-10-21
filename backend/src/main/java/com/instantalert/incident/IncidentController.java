@@ -2,6 +2,7 @@ package com.instantalert.incident;
 
 import java.lang.invoke.MethodHandles;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +16,18 @@ public class IncidentController {
 			IncidentDao incidentDao = new IncidentDao();
 			return incidentDao.addIncident(userId, latitude, longitude, color, msg);
 		}catch(SQLException ex){
-			logger.error("error when creating GroupDao()." + ex.getMessage());
+			logger.error("error when creating addIncident()." + ex.getMessage());
 		}
 		return -1;
+	}
+
+	public static List<Incident> getAllIncidents(){
+		try{
+			IncidentDao incidentDao = new IncidentDao();
+			return incidentDao.getAllIncidents();
+		}catch(SQLException ex){
+			logger.error("error when creating getAllIncidents()." + ex.getMessage());
+		}
+		return null;
 	}
 }

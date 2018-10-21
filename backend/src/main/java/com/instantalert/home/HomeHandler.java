@@ -1,11 +1,13 @@
 package com.instantalert.home;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.instantalert.incident.Incident;
 import com.instantalert.incident.IncidentController;
 import com.instantalert.util.JsonUtil;
 
@@ -23,10 +25,14 @@ public class HomeHandler {
 		float lon = json.get("lon").getAsFloat();
 		int color = json.get("color").getAsInt();
 		String msg = json.get("msg").getAsString();
-		System.out.println("msg received");
 		int incidentId = IncidentController.addIncident(userId, lat, lon, color, msg);
 		Map<String, Integer> object = new HashMap<String,Integer>();
 		object.put("incident_id", incidentId);
 		return JsonUtil.dataToJson(object);
+	};
+	
+	public static Route handleAllIncidentsGet = (Request request, Response response) -> {
+		List<Incident> incidents = IncidentController.getAllIncidents();
+		return JsonUtil.dataToJson(incidents);
 	};
 }
