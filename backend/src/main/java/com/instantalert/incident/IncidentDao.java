@@ -29,35 +29,18 @@ class IncidentDao {
 			}
 		}
 	}
-
-	protected boolean doesExist(int incidentId){
+		
+	protected int addIncident(int userId, float latitude, float longitude, int color, String msg){
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			String sql = "SELECT incident_id FROM incident_table WHERE incident_name=?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt( 0, incidentId);
-			rs = pstmt.executeQuery();
-			return rs.next();
-		}catch (SQLException ex) {
-			logger.error("doesExist() failed. " + ex.getMessage());
-		}finally {
-			release(pstmt, rs);
-		}
-		return false;
-	}
-
-	
-	protected int addIncident(int userId, int latitude, int longitude, int color){
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			String sql = "INSERT INTO incident_table VALUES (null,?,?,?,?)";
+			String sql = "INSERT INTO incident_table VALUES (null,?,?,?,null,null,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, userId);
-			pstmt.setInt(2, latitude);
-			pstmt.setInt(3, longitude);
+			pstmt.setFloat(2, latitude);
+			pstmt.setFloat(3, longitude);
 			pstmt.setInt(4, color);
+			pstmt.setString(5, msg);
 			pstmt.executeUpdate();
 			
 			sql = "SELECT LAST_INSERT_ID()";

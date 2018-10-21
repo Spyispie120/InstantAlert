@@ -12,10 +12,11 @@ create table user_table(user_id int auto_increment,
 					
 create table incident_table(incident_id int auto_increment,
 						user_id int,
-						longtitude int,
-                        latitude int,
+						longtitude float,
+                        latitude float,
                         upVote int,
                         downVote int,
                         color int,
-                        primary key (incident_id),
-                        foreign key incident_table(user_id) references user_table(user_id));
+                        message char(200),
+                        primary key (incident_id));
+                       -- foreign key incident_table(user_id) references user_table(user_id));
