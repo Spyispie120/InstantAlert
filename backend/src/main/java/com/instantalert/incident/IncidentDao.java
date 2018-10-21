@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +31,33 @@ class IncidentDao {
 			}
 		}
 	}
-		
+	
+	//return all incidents
+	protected List<Incident> getAllIncidents(){
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<Incident> incidents = new ArrayList<Incident>();
+		try {
+			String sql = "SELECT * FROM incident_table";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				int incidentId = rs.getInt("incident_id");
+				float lat = rs.getInt("latitude");
+				float lon = rs.getFloat("longitude");
+				int color = rs.getInt("color");
+				String msg = rs.getString("message");
+				Incident incident = new Incident(incidentId, lat, lon, color, msg);
+				incidents.add(incident);
+			}
+		}catch (SQLException ex) {
+			logger.error("addIncident() failed. " + ex.getMessage());
+		}finally {
+			release(pstmt,rs);
+		}
+		return incidents;	
+	}
+	
 	protected int addIncident(int userId, float latitude, float longitude, int color, String msg){
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
