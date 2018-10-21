@@ -1,5 +1,6 @@
 package com.instantalert.user;
 
+import org.mindrot.jbcrypt.*;
 import java.lang.invoke.MethodHandles;
 import java.sql.SQLException;
 
@@ -15,12 +16,12 @@ public class UserController {
 		try{
 			UserDao userDao = new UserDao();
 			if(!userDao.doesExist(username)){
-				
-				//userDao.addUser(username, firstName, lastName, salt, hashedPassword);
+				Password passwd = new Password(password);
+				userDao.addUser(username, firstName, lastName, passwd.getSalt(), passwd.getHashedPassword());
 			}
 			
 		}catch(SQLException ex){
-			logger.error("error when creating GroupDao()." + ex.getMessage());
+			logger.error("error when creating addUser()." + ex.getMessage());
 		}
 	}
 }
